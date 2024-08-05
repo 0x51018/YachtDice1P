@@ -44,16 +44,13 @@ export class YachtDiceGame extends Phaser.Scene {
 
   createBackground() {
     const graphics = this.add.graphics();
-    graphics.fillStyle(0x002055, 1); // 원하는 색상 (예: 회색)
-    graphics.fillRect(0, 0, this.scale.width, this.scale.height); // 전체 화면 크기만큼 색상 채우기
-
+    this.colorSection(graphics, 0, 0, this.scale.width, this.scale.height, 0x002055);
     this.colorSection(graphics, 18, 13, 837, 672, 0x000000); // 게임판 그림자1
     this.colorSection(graphics, 30, 25, 835, 670, 0x939393); // 게임판 그림자2
     this.colorSection(graphics, 30, 25, 825, 660, 0x2e2e2e); // 게임판 영역
-    this.colorSection(graphics, 60, 235, 765, 240, 0x000000); // 주사위 영역
+    this.colorSection(graphics, 60, 235, 765, 240, 0x000000); // 주사위 영역 테두리
     this.colorSection(graphics, 60 + 7, 235 + 6, 765 - 14, 240 - 12, 0xcdddff); // 주사위 영역
-
-    this.colorSection(graphics, 927, 85, 296, 490 + 68, 0xffffff); // 점수표 그림자1
+    this.colorSection(graphics, 927, 85, 296, 490 + 68, 0xffffff); // 점수표 그림자
     this.colorSection(graphics, 933, 91, 284, 478 + 68, 0x000000); // 점수표 영역
     for (let i = 0; i < 16; i++) {
       let betx = 935 + 190;
@@ -79,7 +76,7 @@ export class YachtDiceGame extends Phaser.Scene {
       const x = 142 + i * 150;
       const y = 135;
       const dice = this.add.image(x, y, `dice1`).setScale(0.5);
-      dice.setVisible(false); // 주사위를 처음에 숨깁니다.
+      dice.setVisible(false);
       dice.setInteractive();
       dice.on('pointerdown', () => this.releaseDiceHandler(i));
       this.holdDiceSprites.push(dice);
@@ -90,7 +87,7 @@ export class YachtDiceGame extends Phaser.Scene {
       const y = 357;
       const diceValue = Phaser.Math.Between(1, 6);
       const dice = this.add.image(x, y, `dice${diceValue}`).setScale(0.5);
-      dice.setVisible(false); // 주사위를 처음에 숨깁니다.
+      dice.setVisible(false);
       dice.setInteractive();
       dice.on('pointerdown', () => this.holdDiceHandler(i));
       this.dice.push(dice);
@@ -149,7 +146,7 @@ export class YachtDiceGame extends Phaser.Scene {
   updateRollCountIndicators() {
     this.rollDiceSprites.forEach((sprite, index) => {
       if (index < this.rollCount) {
-        sprite.setTint(0x888888); // 어둡게 처리
+        sprite.setTint(0x888888);
       } else {
         sprite.clearTint();
       }
@@ -167,7 +164,7 @@ export class YachtDiceGame extends Phaser.Scene {
         duration: 240,
         ease: 'Sine.easeInOut',
         onComplete: () => {
-          dice.x = 450 + (index - 2) * 130; // 애니메이션 후 원래 자리로 이동
+          dice.x = 450 + (index - 2) * 130;
           dice.y = 357;
           dice.setVisible(false);
           this.holdDiceSprites[index].setTexture(dice.texture.key);
@@ -189,7 +186,7 @@ export class YachtDiceGame extends Phaser.Scene {
         duration: 240,
         ease: 'Sine.easeInOut',
         onComplete: () => {
-          holdSprite.x = 142 + index * 150; // 애니메이션 후 원래 자리로 이동
+          holdSprite.x = 142 + index * 150;
           holdSprite.y = 135;
           dice.setVisible(true);
           holdSprite.setVisible(false);
@@ -204,7 +201,7 @@ export class YachtDiceGame extends Phaser.Scene {
     }
     this.dice.forEach((dice, index) => {
       if (!this.holdDice.includes(index)) {
-        dice.setVisible(true); // 주사위를 보이도록 설정합니다.
+        dice.setVisible(true);
         this.animateDiceRoll(dice, index);
       }
     });
@@ -230,8 +227,8 @@ export class YachtDiceGame extends Phaser.Scene {
 
   animateDiceRoll(dice, index) {
     const rollAnimation = this.time.addEvent({
-      delay: 30, // 이미지가 변경되는 시간 간격
-      repeat: 9, // 반복 횟수 (10번)
+      delay: 30,
+      repeat: 9,
       callback: () => {
         const diceValue = Phaser.Math.Between(1, 6);
         dice.setTexture(`dice${diceValue}`);
@@ -291,17 +288,16 @@ export class YachtDiceGame extends Phaser.Scene {
     this.holdDice = [];
     this.dice.forEach((dice) => {
       dice.clearTint();
-      dice.setVisible(false); // 주사위를 숨깁니다.
+      dice.setVisible(false);
     });
     this.holdDiceSprites.forEach((sprite) => sprite.setVisible(false));
     this.rollButton.setInteractive(true);
     this.rollButton.clearTint();
 
-    // 확정된 점수만 표시
     Object.keys(this.scoreTexts).forEach((category) => {
       if (this.scores[category] === null) {
         this.scoreTexts[category].setText('-');
-        this.scoreTexts[category].setStyle({ fill: '#fff' }); // 초기화 시 흰색으로 설정
+        this.scoreTexts[category].setStyle({ fill: '#fff' });
       }
     });
 
