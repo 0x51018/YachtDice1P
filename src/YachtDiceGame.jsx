@@ -126,23 +126,32 @@ export class YachtDiceGame extends Phaser.Scene {
       { key: 'largeStraight', text: 'Large Straight' },
       { key: 'yacht', text: 'Yacht' }
     ];
-
+  
     this.scoreTexts = {};
     categories.forEach((category, index) => {
-      const y = 110 + index * 34 + (index > 5 ? 68 : 0);
-      this.add.text(1028, y, category.text, { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
-      this.scoreTexts[category.key] = this.add.text(1170, y, '-', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5).setInteractive();
+      const y = 93 + index * 34 + (index > 5 ? 68 : 0);
+      this.add.text(1028, y + 16, category.text, { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
+  
+      const scoreBg = this.add.rectangle(935 + 280 - 45, y + 16, 89, 32, 0xf1edeb).setOrigin(0.5, 0.5).setInteractive();
+      scoreBg.on('pointerdown', () => this.confirmScore(category.key));
+      scoreBg.on('pointerover', () => scoreBg.setFillStyle(0xcddbf7));
+      scoreBg.on('pointerout', () => scoreBg.setFillStyle(0xf1edeb));
+  
+      this.scoreTexts[category.key] = this.add.text(1170, y + 16, '-', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5).setInteractive();
       this.scoreTexts[category.key].on('pointerdown', () => this.confirmScore(category.key));
+      this.scoreTexts[category.key].on('pointerover', () => scoreBg.setFillStyle(0xcddbf7));
     });
-
+  
     this.sumText = this.add.text(1170, 110 + 34 * 6, '0', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
     this.bonusText = this.add.text(1170, 110 + 34 * 7, '0', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
     this.totalText = this.add.text(1170, 110 + 34 * 15, '0', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
-
+  
     this.add.text(1028, 110 + 34 * 6, 'Sum', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
     this.add.text(1028, 110 + 34 * 7, 'Bonus', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
     this.add.text(1028, 110 + 34 * 15, 'Total', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5);
   }
+  
+
 
   updateRollCountIndicators() {
     this.rollDiceSprites.forEach((sprite, index) => {
@@ -257,6 +266,8 @@ export class YachtDiceGame extends Phaser.Scene {
   }
 
   confirmScore(category) {
+    if (this.rollCount === 0 || this.scores[category] !== null || this.scoreCount >= 13) return; 
+
     const diceValues = this.dice.map((dice) =>
       parseInt(dice.texture.key.replace('dice', ''), 10)
     );
