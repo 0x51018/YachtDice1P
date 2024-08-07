@@ -146,7 +146,7 @@ export class YachtDiceGame extends Phaser.Scene {
 
   updateRollCountIndicators() {
     this.rollDiceSprites.forEach((sprite, index) => {
-      if (index < this.rollCount) {
+      if (index < this.rollCount || this.scoreCount >= 13) {
         sprite.setTint(0x888888);
       } else {
         sprite.clearTint();
@@ -216,7 +216,7 @@ export class YachtDiceGame extends Phaser.Scene {
       });
 
       this.rollCount += 1;
-      if (this.rollCount === 3) {
+      if (this.scoreCount === 13 || this.rollCount === 3) {
         this.rollButton.setInteractive(false);
         this.rollButton.setTint(0x888888);
       }
@@ -292,8 +292,10 @@ export class YachtDiceGame extends Phaser.Scene {
       dice.setVisible(false);
     });
     this.holdDiceSprites.forEach((sprite) => sprite.setVisible(false));
-    this.rollButton.setInteractive(true);
-    this.rollButton.clearTint();
+    if(this.scoreCount < 13) {
+      this.rollButton.setInteractive(true);
+      this.rollButton.clearTint();
+    }
 
     Object.keys(this.scoreTexts).forEach((category) => {
       if (this.scores[category] === null) {
@@ -333,24 +335,16 @@ export class YachtDiceGame extends Phaser.Scene {
       largeStraight: new Set(diceValues).size === 5 && this.isLargeStraight(diceValues) ? 40 : 0,
       yacht: Object.values(counts).some((count) => count === 5) ? 50 : 0,
     };
-
     return categories;
   }
 
   isSmallStraight(diceValues) {
-    let straights = [
-      [1, 2, 3, 4],
-      [2, 3, 4, 5],
-      [3, 4, 5, 6],
-    ];
+    let straights = [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]];
     return straights.some((straight) => straight.every((val) => diceValues.includes(val)));
   }
 
   isLargeStraight(diceValues) {
-    let straights = [
-      [1, 2, 3, 4, 5],
-      [2, 3, 4, 5, 6],
-    ];
+    let straights = [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6]];
     return straights.some((straight) => straight.every((val) => diceValues.includes(val)));
   }
 }
