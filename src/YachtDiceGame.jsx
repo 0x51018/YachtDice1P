@@ -4,6 +4,7 @@ export class YachtDiceGame extends Phaser.Scene {
   constructor() {
     super({ key: 'YachtDiceGame' });
     this.rollCount = 0;
+    this.scoreCount = 0;
     this.dice = [];
     this.holdDice = [];
     this.holdDiceSprites = [];
@@ -196,7 +197,7 @@ export class YachtDiceGame extends Phaser.Scene {
   }
 
   rollDiceHandler() {
-    if (this.rollCount >= 3) {
+    if (this.rollCount >= 3 || this.scoreCount >= 13) {
       return;
     }
     this.dice.forEach((dice, index) => {
@@ -266,7 +267,7 @@ export class YachtDiceGame extends Phaser.Scene {
       this.scores[category] = score;
       this.scoreTexts[category].setText(score);
       this.scoreTexts[category].setStyle({ fill: '#000' });
-
+      this.scoreCount += 1;
       this.updateSumBonusTotal();
       this.resetRound();
     }
