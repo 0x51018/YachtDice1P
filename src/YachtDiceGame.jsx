@@ -24,6 +24,7 @@ export class YachtDiceGame extends Phaser.Scene {
       yacht: null,
     };
     this.rollDiceSprites = [];
+    this.animationPlaying = false;
   }
 
   preload() {
@@ -206,7 +207,7 @@ export class YachtDiceGame extends Phaser.Scene {
   }
 
   rollDiceHandler() {
-    if (this.rollCount >= 3 || this.scoreCount >= 13) {
+    if (this.rollCount >= 3 || this.scoreCount >= 13 || this.animationPlaying) {
       return;
     }
     this.dice.forEach((dice, index) => {
@@ -236,6 +237,7 @@ export class YachtDiceGame extends Phaser.Scene {
   }
 
   animateDiceRoll(dice, index) {
+    this.animationPlaying = true;
     const rollAnimation = this.time.addEvent({
       delay: 30,
       repeat: 9,
@@ -248,6 +250,7 @@ export class YachtDiceGame extends Phaser.Scene {
 
     this.time.delayedCall(rollAnimation.delay * (rollAnimation.repeat + 1), () => {
       rollAnimation.remove(false);
+      this.animationPlaying = false;
     });
   }
 
