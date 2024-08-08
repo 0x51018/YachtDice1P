@@ -47,11 +47,11 @@ export class YachtDiceGame extends Phaser.Scene {
   createBackground() {
     const graphics = this.add.graphics();
     this.colorSection(graphics, 0, 0, this.scale.width, this.scale.height, 0x002055);
-    this.colorSection(graphics, 18, 13, 837, 672, 0x000000); // 게임판 그림자1
-    this.colorSection(graphics, 30, 25, 835, 670, 0x939393); // 게임판 그림자2
+    this.colorSection(graphics, 22, 17, 833, 668, 0x000000); // 게임판 그림자1
+    this.colorSection(graphics, 30, 25, 831, 666, 0x939393); // 게임판 그림자2
     this.colorSection(graphics, 30, 25, 825, 660, 0x2e2e2e); // 게임판 영역
     this.colorSection(graphics, 60, 235, 765, 240, 0x000000); // 주사위 영역 테두리
-    this.colorSection(graphics, 60 + 7, 235 + 6, 765 - 14, 240 - 12, 0xcdddff); // 주사위 영역
+    this.colorSection(graphics, 60 + 5, 235 + 4, 765 - 10, 240 - 8, 0xcdddff); // 주사위 영역
     this.colorSection(graphics, 927, 85, 296, 490 + 68, 0xffffff); // 점수표 그림자
     this.colorSection(graphics, 933, 91, 284, 478 + 68, 0x000000); // 점수표 영역
     for (let i = 0; i < 16; i++) {
