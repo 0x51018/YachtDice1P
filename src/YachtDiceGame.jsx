@@ -135,7 +135,7 @@ export class YachtDiceGame extends Phaser.Scene {
   
       const scoreBg = this.add.rectangle(935 + 280 - 45, y + 16, 89, 32, 0xf1edeb).setOrigin(0.5, 0.5).setInteractive();
       scoreBg.on('pointerdown', () => this.confirmScore(category.key));
-      scoreBg.on('pointerover', () => scoreBg.setFillStyle(0xcddbf7));
+      scoreBg.on('pointerover', () => scoreBg.setFillStyle(0xffddeb));
       scoreBg.on('pointerout', () => scoreBg.setFillStyle(0xf1edeb));
   
       this.scoreTexts[category.key] = this.add.text(1170, y + 16, '-', { fontSize: '20px', fill: '#000', fontStyle: 'bold' }).setOrigin(0.5, 0.5).setInteractive();
