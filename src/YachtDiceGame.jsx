@@ -250,7 +250,7 @@ export class YachtDiceGame extends Phaser.Scene {
 
     this.time.delayedCall(rollAnimation.delay * (rollAnimation.repeat + 1), () => {
       rollAnimation.remove(false);
-      this.animationPlaying = false;
+      this.time.addEvent({delay: 300, repeat: 0, callback: () => {this.animationPlaying = false;}, callbackScope: this});
     });
   }
 
