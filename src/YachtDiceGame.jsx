@@ -81,6 +81,8 @@ export class YachtDiceGame extends Phaser.Scene {
       dice.setVisible(false);
       dice.setInteractive();
       dice.on('pointerdown', () => this.releaseDiceHandler(i));
+      dice.on('pointerover', () => dice.setTint(0xeeeeee));
+      dice.on('pointerout', () => dice.clearTint());
       this.holdDiceSprites.push(dice);
     }
 
@@ -92,6 +94,8 @@ export class YachtDiceGame extends Phaser.Scene {
       dice.setVisible(false);
       dice.setInteractive();
       dice.on('pointerdown', () => this.holdDiceHandler(i));
+      dice.on('pointerover', () => dice.setTint(0xeeeeee));
+      dice.on('pointerout', () => dice.clearTint());
       this.dice.push(dice);
     }
   }
@@ -107,8 +111,10 @@ export class YachtDiceGame extends Phaser.Scene {
   }
 
   createRollButton() {
-    this.rollButton = this.add.image(440, 560, 'rollButton').setScale(0.5).setInteractive();
+    this.rollButton = this.add.image(444, 560, 'rollButton').setScale(0.5).setInteractive();
     this.rollButton.on('pointerdown', this.rollDiceHandler, this);
+    this.rollButton.on('pointerover', () => this.rollButton.setTint(0xdddddd));
+    this.rollButton.on('pointerout', () => this.rollButton.clearTint());
   }
 
   createScoreTable() {
